@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!-- saved from url=(0090)https://www-packofparts-org.filesusr.com/html/3b0a1f_54cbf6d1cf634dcabb9c5b22ddba4a45.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Calendar Embed</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: transparent;
+    }
+
+    #calendar-widget-container {
+      border-radius: 16px;
+      overflow: hidden;
+      background: transparent;
+      border: 3px solid #4a90e2; /* default fallback */
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      box-sizing: border-box;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      max-width: 100%; /* prevent overflow on small screens */
+    }
+
+    iframe {
+      display: block;
+      border-radius: 12px;
+      border: 0;
+      background: #fff;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="calendar-widget-container" style="border: 3px solid rgb(66, 133, 244); box-shadow: rgba(66, 133, 244, 0.5) 0px 4px 20px; width: 1000px; height: 733px;"><iframe src="./embed.html" width="100%" height="100%" frameborder="0" scrolling="no" loading="lazy" style="border-radius: 12px;"></iframe></div>
+
+  <script>
+    // Listen for messages from the Wix widget
+    window.addEventListener("message", function (event) {
+      const container = document.getElementById("calendar-widget-container");
+
+      try {
+        const data = JSON.parse(event.data);
+
+        if (!data.src || !data.width || !data.height) {
+          console.error("Invalid event data:", data);
+          return;
+        }
+
+        console.log("Received calendar data:", data);
+
+        // Apply theme color to container
+        if (data.color) {
+          container.style.border = `3px solid ${data.color}`;
+          container.style.boxShadow = `0 4px 20px ${data.color}80`; // semi-transparent shadow
+        }
+
+        // Set container dimensions dynamically
+        container.style.width = data.width + "px";
+        container.style.height = data.height + "px";
+
+        // Create a new iframe element
+        const iframe = document.createElement("iframe");
+        iframe.src = data.src;
+        iframe.width = "100%";   // always scale to container width
+        iframe.height = "100%";  // always scale to container height
+        iframe.style.borderRadius = "12px";
+        iframe.frameBorder = "0";
+        iframe.scrolling = "no";
+        iframe.loading = "lazy";
+
+        // Replace old iframe
+        container.innerHTML = "";
+        container.appendChild(iframe);
+
+      } catch (error) {
+        console.error("Error processing received message:", error);
+      }
+    });
+  </script>
+
+
+
+</body></html>
